@@ -1,3 +1,5 @@
+# Hello world in 32bit asm
+
 .global _start
 .intel_syntax
 .section .text
