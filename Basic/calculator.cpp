@@ -7,9 +7,8 @@ double x, y;
 char c;
 
 int main() {
-
-    while(1) {
-        
+    
+    while(1) {    
         //choose operator
         cout << "Insert X to exit\nChoose operator: ";
         cin >> c;
@@ -24,7 +23,7 @@ int main() {
         cin >> x;
         cout << "Insert second nuber: ";
         cin >> y;
-
+        
         switch(c) {
             case '+':
                 cout << "Addition: " << x + y << endl;
