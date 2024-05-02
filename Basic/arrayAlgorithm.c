@@ -8,7 +8,6 @@ int main() {
   printf("Unsorted:\n");
   //Print array before sorting
   for (i = 0; i < arrayLenght; i++) {
-
     printf("> %d\n", array[i])  ; 
   }
   //sorting...
