@@ -1,13 +1,16 @@
+#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <ios>
+#include <istream>
 #include <limits>
 #include <ostream>
 #include <pstl/glue_algorithm_defs.h>
 #include <string>
 #include <iostream>
 
+//Allows to determine which OS is being used
 #ifdef _WIN32
 #include <windows.h>
 
@@ -27,16 +30,18 @@ void ShowContent() {
   system(os_command.c_str());
   std::ifstream oFile(originalFile);
   std::string line;
+  int lineNumber = 0;
   
-  std::cout << "<==========Todo App==========>\n\n";
+  std::cout << "<====================Todo App====================>\n\n";
 
   while (getline(oFile, line)) {
-    std::cout << line << std::endl;
+    lineNumber++;
+    std::cout << "[" << lineNumber << "] " << line << std::endl;
   }
   oFile.close();
-  std::cout << "\n<==========================================>";
-  std::cout << "\n A = add task | D = delete task | E = exit";
-  std::cout << "\n<==========================================>";
+  std::cout << "\n<======================================================================>";
+  std::cout << "\n + = add task | - = delete task | -all = delete all | x = exit/go back";
+  std::cout << "\n<======================================================================>";
 }
 
 void AddTask() {
@@ -47,8 +52,9 @@ void AddTask() {
   while (1) {
     ShowContent();
     std::cout << "\nAdd task: ";
-    std::cin >> task;
-    if (task == "E") {
+    std::getline(std::cin >> std::ws, task);
+
+    if (task == "x") {
       break;
     }
     else {
@@ -74,7 +80,7 @@ void DeleteTask() {
       std::cout << "It's not a number";
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    } 
+    }
     else {
       validInput = true;
     }
@@ -103,6 +109,12 @@ void DeleteTask() {
   }
 }
 
+void DeleteAll() {
+  std::ofstream oFile(originalFile);
+  oFile.clear();
+  oFile.close();
+}
+
 int main (int argc, char *argv[]) {
 
   while (1) {
@@ -124,14 +136,17 @@ int main (int argc, char *argv[]) {
       }
     }
    
-    if (command == "A") {
+    if (command == "+") {
       AddTask();
     } 
-    else if (command == "D") {
+    else if (command == "-") {
       ShowContent();
       DeleteTask();
-    } 
-    else if (command == "E") {
+    }
+    else if (command == "-all") {
+      DeleteAll();
+    }
+    else if (command == "x") {
       system(os_command.c_str());
       std::cout << "Goodbye <3\n";
       break;
