@@ -23,6 +23,7 @@ std::string os_command = "cls";
 std::string os_command = "clear";
 #endif
 
+//Localization of tasks file
 std::string originalFile = "logs/task_list.txt";
 std::string tmpFile = "logs/tmp.txt";
 

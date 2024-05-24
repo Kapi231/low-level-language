@@ -1,0 +1,1 @@
+It needs to be run along side with 'logs' folder and 'task_list.txt' provided within this folder (it can be changed in code).
