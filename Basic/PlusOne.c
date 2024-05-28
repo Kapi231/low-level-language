@@ -3,7 +3,8 @@
 int digits[] = {4, 3, 2, 1};
 
 void plusOne() {
-    int x, digitsSize = (sizeof(digits) / 4);
+    int x;
+    int digitsSize = (sizeof(digits) / 4);
     printf("size of array: %d\n", digitsSize);
     //Before
     printf("Before: ");
