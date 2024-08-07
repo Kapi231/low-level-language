@@ -1,6 +1,6 @@
 
 # optional flags (if the compiler supports it)
-CXXFLAGS += -std=c++11
+# CXXFLAGS += -std=c++11
 
 # HIGHLY RECOMMENDED flags
 CXXFLAGS += -Wall -Wextra -pedantic-errors
@@ -11,10 +11,13 @@ LDLIBS := $(shell pkg-config sfml-all --libs)
 # The rest will turn any source file ending in .cpp
 # into a program of the same name
 
-SOURCES := $(wildcard *.cpp)
-PROGRAMS := $(patsubst %.cpp,%,$(SOURCES))
+all: object compile run
 
-all: $(PROGRAMS)
+object: 
+	g++ -c *.cpp -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system
 
-clean: $(RM) $(PROGRAMS)
+compile:
+	g++ *.o -o program -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system
 
+run: 
+	./program

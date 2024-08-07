@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "buttons.hpp"
+
 int main() {
   sf::RenderWindow window(sf::VideoMode(800, 600), "Calculator");
 
@@ -16,7 +18,8 @@ int main() {
     }
 
     window.clear();
-
+    window.draw(CircleButton(25, 10, 10));
+    //Update window changes
     window.display();
   }
 }
