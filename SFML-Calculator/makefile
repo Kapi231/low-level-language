@@ -14,10 +14,8 @@ LDLIBS := $(shell pkg-config sfml-all --libs)
 all: object compile run
 
 object: 
-	g++ -c *.cpp -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system
-
+	g++ $(CXXFLAGS) -c *.cpp $(LDLIBS)
 compile:
-	g++ *.o -o program -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system
-
+	g++ $(CXXFLAGS) *.o -o program $(LDLIBS)
 run: 
 	./program
