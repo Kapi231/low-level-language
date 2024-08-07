@@ -1,5 +1,5 @@
-#ifndef FUNCTIONS_H_INCLUDED
-#define FUNCTIONS_H_INCLUDED
+#ifndef BUTTONS_H
+#define BUTTONS_H
 
 #include <SFML/Graphics/CircleShape.hpp>
 
