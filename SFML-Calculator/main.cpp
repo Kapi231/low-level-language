@@ -6,11 +6,20 @@
 
 #include "buttons.hpp"
 
+int fixedX = 10;
+
 int main() 
 {
-  sf::RenderWindow window(sf::VideoMode(300, 150), "Calculator");
+  sf::CircleShape tabel[3];
+  sf::RenderWindow window(sf::VideoMode(640, 480), "Calculator");
   sf::Font font;
   font.loadFromFile("Fonts/static/OpenSans-Medium.ttf");
+
+  for (int i = 0; i < 3; i++) 
+    {
+      tabel[i] = CircleButton(25, fixedX, 10);
+      fixedX += 40;
+    }
 
     while (window.isOpen()) 
     {
@@ -26,10 +35,16 @@ int main()
       }
     }
 
-  window.clear();
-  window.draw(CircleButton(25, 10, 10));
-  window.draw(DisplayText(10, 10, 10, "1",font));  
-    //Update window changes
-  window.display();
+    window.clear();
+  //  window.draw(CircleButton(25, 10, 10));
+  //  window.draw(DisplayText(10, 10, 10, "1",font));  
+    
+    for (int x = 0; x < 3; x++) 
+    {
+      window.draw(tabel[x]);
+    } 
+
+      //Update window changes
+    window.display();
   }
 }
