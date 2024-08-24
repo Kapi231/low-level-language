@@ -21,35 +21,33 @@ int main()
   {
     int ch = getch();
     
-    if (ch == KEY_LEFT) 
-    {
-      //Prevents accesing negative number
-      if (pos_x != 0) 
-      {
-        pos_x--;
-      }
-      ch = 0;
-    } 
-    else if (ch == KEY_RIGHT) 
-    {
-      if (unsigned(pos_x) < buffer.size()) 
-      {
+    switch (ch) {
+      case KEY_RIGHT:
+        if (unsigned(pos_x) < buffer.size()) 
+        {
+          pos_x++;
+        }
+        ch = 0;
+        break;
+      case KEY_LEFT:
+        //Prevents accesing negative number
+        if (pos_x != 0) 
+        {
+          pos_x--;
+        }
+        ch = 0;
+        break;
+      case KEY_BACKSPACE:
+        if (pos_x != 0) 
+        {
+          pos_x--;
+          buffer.erase(buffer.begin() + pos_x);
+        }
+        ch = 0;
+        break;
+      default:
         pos_x++;
-      }
-      ch = 0;
-    } 
-    else if (ch == KEY_BACKSPACE) 
-    {
-      if (pos_x != 0) 
-      {
-        pos_x--;
-        buffer.erase(buffer.begin() + pos_x);
-      }
-      ch = 0;
-    } 
-    else 
-    {
-      pos_x++;
+        break;
     }
     
     //Prevents from trying to insert at negative position
