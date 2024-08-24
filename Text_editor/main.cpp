@@ -4,7 +4,7 @@
 
 int main() 
 {
-  std::vector<char> buffer{};
+  std::vector<char> buffer;
   
   int pos_x, pos_y;
 
@@ -38,18 +38,22 @@ int main()
         ch = 0;
         break;
       case KEY_BACKSPACE:
-        if (pos_x != 0) 
+        if (pos_x > 0) 
         {
           pos_x--;
           buffer.erase(buffer.begin() + pos_x);
         }
         ch = 0;
         break;
+      case 10: // Return key
+        pos_x++;
+        pos_y--;
+        break;
       default:
         pos_x++;
         break;
     }
-    
+       
     //Prevents from trying to insert at negative position
     if (ch != 0) 
     {
@@ -70,6 +74,8 @@ int main()
     refresh();
   }
   endwin();
+  
+  exit(0);
 
   return 0;
 }

@@ -1,4 +1,4 @@
 all: compile
 
 compile:
-	g++ main.cpp -o run -lncurses -Wall 
+	g++ main.cpp -o Pico -lncurses -Wall 
