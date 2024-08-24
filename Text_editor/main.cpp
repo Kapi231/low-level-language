@@ -6,54 +6,70 @@ int main()
 {
   std::vector<char> buffer{};
   
-  int cur_x, cur_y;
   int pos_x, pos_y;
 
   initscr();
+
   keypad(stdscr, 1);
   noecho();
-  getyx(stdscr, pos_x, pos_y);
+  
+  getyx(stdscr, pos_y, pos_x);
+  move(pos_y, pos_x);
+  refresh();
 
   while (1) 
   {
-    getyx(stdscr, cur_y, cur_x);
-    int x = getch();
-
-    switch (x) {
-      case KEY_LEFT:
+    int ch = getch();
+    
+    if (ch == KEY_LEFT) 
+    {
+      //Prevents accesing negative number
+      if (pos_x != 0) 
+      {
         pos_x--;
-        x = 0;
-        break;
-      case KEY_RIGHT:
+      }
+      ch = 0;
+    } 
+    else if (ch == KEY_RIGHT) 
+    {
+      if (unsigned(pos_x) < buffer.size()) 
+      {
         pos_x++;
-        x = 0;
-        break;
-      case KEY_UP:
-        pos_y++;
-        x = 0;
-        break;
-      case KEY_DOWN:
-        pos_y--;
-        x = 0;
-        break;
-      default:
-        pos_x++;
-        break;
+      }
+      ch = 0;
+    } 
+    else if (ch == KEY_BACKSPACE) 
+    {
+      if (pos_x != 0) 
+      {
+        pos_x--;
+        buffer.erase(buffer.begin() + pos_x);
+      }
+      ch = 0;
+    } 
+    else 
+    {
+      pos_x++;
     }
-    move(pos_x, pos_y);
-
-    refresh();   
-    buffer.insert(buffer.begin() + pos_x - 1, x);
+    
+    //Prevents from trying to insert at negative position
+    if (ch != 0) 
+    {
+      buffer.insert(buffer.begin() + pos_x - 1, ch);
+    }
     
     //Clears screen after every display
     clear();
     refresh();
 
     //Display what is written on the buffer
-    for (int i = 0; i < buffer.size(); i++)
+    for (unsigned int i = 0; i < buffer.size(); i++)
     {
       printw("%c", buffer[i]);
     }
+
+    move(pos_y, pos_x);
+    refresh();
   }
   endwin();
 
