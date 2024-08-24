@@ -5,13 +5,17 @@
 int main() 
 {
   std::vector<char> buffer{};
+  
+  int cur_x, cur_y;
 
   initscr();
   keypad(stdscr, 1);
   noecho();
 
+
   while (1) 
   {
+    getyx(stdscr, cur_y, cur_x);
     char x = getch();
 
     buffer.insert(buffer.end(), x);
