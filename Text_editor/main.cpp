@@ -11,6 +11,7 @@ int main()
 
   initscr();
 
+  curs_set(0);
   keypad(stdscr, 1);
   noecho();
   
@@ -31,7 +32,7 @@ int main()
           {
             if (buffer[i] == '\n')
             {
-              pos_x = i - 1;
+              pos_x = i;
               break;
             }
           }
@@ -48,7 +49,6 @@ int main()
             if (buffer[i] == '\n')
             {
               pos_x = i + 1;
-              break;
             }
           }
         }
