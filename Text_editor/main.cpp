@@ -27,14 +27,32 @@ int main()
         if (unsigned(pos_y) > 0)
         {
           pos_y--;
+        for (int i = pos_x; i > 0; i--)
+          {
+            if (buffer[i] == 10)
+            {
+              pos_x = pos_x - i;
+              break;
+            }
+          }
         }
+        
         ch = 0;
         break;
       case 258: //Arrow down
         if (pos_y < lines) 
         {
           pos_y++;
+          for (int i = pos_x; i > 0; i++)
+          {
+            if (buffer[i] == 10)
+            {
+              pos_x = pos_x + i;
+              break;
+            }
+          }
         }
+        
         ch = 0;
         break;
       case 261: //Arrow right
@@ -62,7 +80,7 @@ int main()
         break;
       case 10: // Return key
         pos_x++;
-        pos_y++;
+        //pos_y++;
         lines++;
         break;
       default:
@@ -93,7 +111,6 @@ int main()
         lines++;
       }
     }
-
     move(pos_y, pos_x);
     refresh();
   }
