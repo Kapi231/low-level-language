@@ -7,9 +7,11 @@ int main()
   std::vector<char> buffer;
   
   int pos_x, pos_y;
-  int lines = 0;
 
   initscr();
+
+  start_color();
+  init_pair(1, COLOR_WHITE, COLOR_RED);
 
   curs_set(0);
   keypad(stdscr, 1);
@@ -25,40 +27,39 @@ int main()
     
     switch (ch) {
       case 259: //Arrow up
-        if (pos_y > 0)
+        for (int i = pos_x; i > 0; i--)
         {
-          pos_y--;
-          for (int i = pos_x; i > 0; i--)
+          if (buffer[i] == '\n')
           {
-            if (buffer[i] == '\n')
-            {
-              pos_x = i;
-              break;
-            }
+            pos_x = i - 1;
+            break;
           }
         }
         
+        pos_y--;
         ch = 0;
         break;
       case 258: //Arrow down
-        if (pos_y < lines) 
+        for (unsigned int i = pos_x; i < buffer.size(); i++) 
         {
-          pos_y++;
-          for (unsigned int i = pos_x; i < buffer.size(); i++) 
+          if (buffer[i] == '\n')
           {
-            if (buffer[i] == '\n')
-            {
-              pos_x = i + 1;
-            }
+            pos_x = i + 1;
+            break;
           }
         }
-        
         ch = 0;
         break;
       case 261: //Arrow right
         if (unsigned(pos_x) < buffer.size()) 
         {
           pos_x++;
+
+          if (buffer[pos_x] == '\n')
+          {
+            pos_x--;
+          }
+
         }
         ch = 0;
         break;
@@ -67,6 +68,11 @@ int main()
         if (pos_x != 0) 
         {
           pos_x--;
+
+          if (buffer[pos_x] == '\n')
+          {
+            pos_x++;
+          }
         }
         ch = 0;
         break;
@@ -78,39 +84,41 @@ int main()
         }
         ch = 0;
         break;
-      case 10: // Return key
-        pos_x++;
-        pos_y++;
-        lines++;
-        break;
       default:
         pos_x++;
         break;
     }
-       
-    //Prevents from trying to insert at negative position
-    if (ch != 0) 
+    
+    if (ch != 0) //Prevents from trying to insert at negative position
     {
       buffer.insert(buffer.begin() + pos_x - 1, ch);
+    }
+
+    if (ch == '\n') //Gives space before 'new line' 
+    {
+      buffer.insert(buffer.begin() + pos_x - 1, ' ');
     }
     
     //Clears screen after every display
     clear();
     refresh();
-
-    //We need to zero lines before every counting to not count same line twice or more
-    lines = 0;
-
+    
     //Display what is written on the buffer
     for (unsigned int i = 0; i < buffer.size(); i++)
     {
-      printw("%c", buffer[i]);
-      
-      if (buffer[i] == 10) 
+      //My own pesudo cursor
+      if (i == unsigned(pos_x))
       {
-        lines++;
+        attron(COLOR_PAIR(1));
+        printw("%c", buffer[i]);
+        attroff(COLOR_PAIR(1));
+      }
+      else 
+      {
+        printw("%c", buffer[i]);
       }
     }
+
     move(pos_y, pos_x);
     refresh();
   }
