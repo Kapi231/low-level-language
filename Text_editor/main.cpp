@@ -7,6 +7,7 @@ int main()
   std::vector<char> buffer;
   
   int pos_x, pos_y;
+  int lines = 0;
 
   initscr();
 
@@ -22,14 +23,28 @@ int main()
     int ch = getch();
     
     switch (ch) {
-      case KEY_RIGHT:
+      case 259: //Arrow up
+        if (unsigned(pos_y) > 0)
+        {
+          pos_y--;
+        }
+        ch = 0;
+        break;
+      case 258: //Arrow down
+        if (pos_y < lines) 
+        {
+          pos_y++;
+        }
+        ch = 0;
+        break;
+      case 261: //Arrow right
         if (unsigned(pos_x) < buffer.size()) 
         {
           pos_x++;
         }
         ch = 0;
         break;
-      case KEY_LEFT:
+      case 260: //Arrow left
         //Prevents accesing negative number
         if (pos_x != 0) 
         {
@@ -47,7 +62,8 @@ int main()
         break;
       case 10: // Return key
         pos_x++;
-        pos_y--;
+        pos_y++;
+        lines++;
         break;
       default:
         pos_x++;
@@ -64,10 +80,18 @@ int main()
     clear();
     refresh();
 
+    //We need to zero lines before every counting to not count same line twice or more
+    lines = 0;
+
     //Display what is written on the buffer
     for (unsigned int i = 0; i < buffer.size(); i++)
     {
       printw("%c", buffer[i]);
+      
+      if (buffer[i] == 10) 
+      {
+        lines++;
+      }
     }
 
     move(pos_y, pos_x);
