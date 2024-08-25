@@ -24,14 +24,14 @@ int main()
     
     switch (ch) {
       case 259: //Arrow up
-        if (unsigned(pos_y) > 0)
+        if (pos_y > 0)
         {
           pos_y--;
-        for (int i = pos_x; i > 0; i--)
+          for (int i = pos_x; i > 0; i--)
           {
-            if (buffer[i] == 10)
+            if (buffer[i] == '\n')
             {
-              pos_x = pos_x - i;
+              pos_x = i - 1;
               break;
             }
           }
@@ -43,11 +43,11 @@ int main()
         if (pos_y < lines) 
         {
           pos_y++;
-          for (int i = pos_x; i > 0; i++)
+          for (unsigned int i = pos_x; i < buffer.size(); i++) 
           {
-            if (buffer[i] == 10)
+            if (buffer[i] == '\n')
             {
-              pos_x = pos_x + i;
+              pos_x = i + 1;
               break;
             }
           }
@@ -80,7 +80,7 @@ int main()
         break;
       case 10: // Return key
         pos_x++;
-        //pos_y++;
+        pos_y++;
         lines++;
         break;
       default:
