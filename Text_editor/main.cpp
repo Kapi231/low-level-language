@@ -1,11 +1,34 @@
+#include <cstdio>
 #include <cstdlib>
 #include <curses.h>
+#include <iostream>
+#include <string>
 #include <vector>
+#include <fstream>
 
-int main() 
+int main(int argv, const char** args) 
 {
-  std::vector<char> buffer;
+  if (argv > 2)
+  {
+    std::cout << "Too many arguments!\nOnly two allowed\n";
+    return 1;
+  }
+  
+  //File to edit
+  std::string fileName = args[1];
+  std::string text;
+  char ch;
+  std::ifstream file(fileName);
 
+  std::vector<char> buffer;
+  
+  //Open and display file
+  std::fstream fin(fileName, std::fstream::in);
+  while (fin >> std::noskipws >> ch) 
+  {
+    buffer.insert(buffer.end(), ch);
+  }
+  
   buffer.insert(buffer.end(), ' ');
   
   int pos_x, pos_y;
@@ -25,8 +48,29 @@ int main()
 
   while (1) 
   {
-    int ch = getch();
     
+    //Clears screen after every display
+    clear();
+    refresh();
+    
+    //Display what is written on the buffer
+    for (unsigned int i = 0; i < buffer.size(); i++)
+    {
+      //My own pesudo cursor
+      if (i == unsigned(pos_x))
+      {
+        attron(COLOR_PAIR(1));
+        printw("%c", buffer[i]);
+        attroff(COLOR_PAIR(1));
+      }
+      else 
+      {
+        printw("%c", buffer[i]);
+      }
+    }
+
+  int ch = getch();
+
     switch (ch) {
       case 259: //Arrow up
         for (int i = pos_x; i > 0; i--)
@@ -101,32 +145,13 @@ int main()
       buffer.insert(buffer.begin() + pos_x - 1, ' ');
       pos_x++;
     }
-    
-    //Clears screen after every display
-    clear();
-    refresh();
-    
-    //Display what is written on the buffer
-    for (unsigned int i = 0; i < buffer.size(); i++)
-    {
-      //My own pesudo cursor
-      if (i == unsigned(pos_x))
-      {
-        attron(COLOR_PAIR(1));
-        printw("%c", buffer[i]);
-        attroff(COLOR_PAIR(1));
-      }
-      else 
-      {
-        printw("%c", buffer[i]);
-      }
-    }
 
     move(pos_y, pos_x);
     refresh();
   }
   endwin();
   
+  file.close();
   exit(0);
 
   return 0;
