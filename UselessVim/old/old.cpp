@@ -40,6 +40,7 @@ int main(int argv, const char** args)
 
   curs_set(0);
   keypad(stdscr, 1);
+  scrollok(stdscr, true);
   noecho();
   
   getyx(stdscr, pos_y, pos_x);
