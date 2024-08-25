@@ -5,6 +5,8 @@
 int main() 
 {
   std::vector<char> buffer;
+
+  buffer.insert(buffer.end(), ' ');
   
   int pos_x, pos_y;
 
@@ -51,7 +53,7 @@ int main()
         ch = 0;
         break;
       case 261: //Arrow right
-        if (unsigned(pos_x) < buffer.size()) 
+        if (unsigned(pos_x) < buffer.size() - 1) 
         {
           pos_x++;
 
@@ -97,6 +99,7 @@ int main()
     if (ch == '\n') //Gives space before 'new line' 
     {
       buffer.insert(buffer.begin() + pos_x - 1, ' ');
+      pos_x++;
     }
     
     //Clears screen after every display
