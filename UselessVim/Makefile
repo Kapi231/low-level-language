@@ -1,7 +1,4 @@
-all: compilem run
+all: compile
 
 compile:
-	g++ main.cpp -o uvim -lncurses -Wall 
-
-run:
-	./uvim
+	g++ uvim.cpp -o uvim -lncurses -Wall 
