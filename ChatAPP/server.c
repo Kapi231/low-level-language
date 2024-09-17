@@ -8,17 +8,9 @@
 void TCP_server(int Port)
 {
     printf("Initialiazing server...\n");    
-    const char hello = "Hello";
+    const char *hello = "Hello";
     char buffer[512] = { 0 };
-
-    // Sockets
-    int commmunication_socket, sockfd;
-   
-    if (socket(AF_INET, SOCK_STREAM, 0) < 0)
-    {
-        perror("Faild creating socket");
-        exit(1);
-    }
+    int opt = 1;
 
     // Assigning variables
     struct sockaddr_in sock_addr;
@@ -27,18 +19,29 @@ void TCP_server(int Port)
     sock_addr.sin_port = htons(Port);
     socklen_t addr_len = sizeof(sock_addr);
 
-    if (bind(sockfd, (struct sockaddr*)&sock_addr, addr_len) < 0)
+    // Sockets
+    int commmunication_socket, sockfd;
+   
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    {
+        perror("Faild creating socket");
+        exit(1);
+    }
+
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(int));
+
+    if (bind(sockfd, (struct sockaddr*)&sock_addr, addr_len) == -1)
     {
         perror("Bind error!");
         exit(1);
     }
-    if (listen(sockfd, 3) < 0) //why 3?
+    if (listen(sockfd, 3) == -1) //why 3?
     {
         perror("Listen error!");
         exit(1);
     }
 
-    if (commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len) < 0)
+    if ((commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len)) == -1)
     {
         perror("Accept error!");
         exit(1);

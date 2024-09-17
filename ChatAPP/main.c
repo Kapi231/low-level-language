@@ -1,8 +1,9 @@
-#include <stdio.h>
 #include "server.h"
+
+#define PORT 1500
 
 int main()
 {
-    TCP_server(1500);
+    TCP_server(PORT);
     return 0;
 }
