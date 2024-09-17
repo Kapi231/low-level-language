@@ -1,36 +1,54 @@
 #include <complex.h>
+#include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-int main()
+void TCP_server(int Port)
 {
-    int com_socket;
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    printf("Initialiazing server...\n");    
+    const char hello = "Hello";
+    char buffer[512] = { 0 };
 
+    // Sockets
+    int commmunication_socket, sockfd;
+   
+    if (socket(AF_INET, SOCK_STREAM, 0) < 0)
+    {
+        perror("Faild creating socket");
+        exit(1);
+    }
+
+    // Assigning variables
     struct sockaddr_in sock_addr;
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_addr.s_addr = INADDR_ANY;
-    sock_addr.sin_port = htons(3500);
+    sock_addr.sin_port = htons(Port);
     socklen_t addr_len = sizeof(sock_addr);
 
     if (bind(sockfd, (struct sockaddr*)&sock_addr, addr_len) < 0)
     {
         perror("Bind error!");
-        return -1;
+        exit(1);
     }
     if (listen(sockfd, 3) < 0) //why 3?
     {
         perror("Listen error!");
-        return -1;
+        exit(1);
     }
-    if (com_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len) < 0)
+
+    if (commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len) < 0)
     {
         perror("Accept error!");
-        return -1;
+        exit(1);
     }
-    //read();
-    close(com_socket);
+
+    read(commmunication_socket, buffer, sizeof(buffer) - 1);
+    printf("%s\n", buffer);
+    send(commmunication_socket, hello, sizeof(hello) - 1, 0);
+    printf("Message send");
+    
+    close(commmunication_socket);
     close(sockfd);
-    return 0;
 }
