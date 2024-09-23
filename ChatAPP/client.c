@@ -1,3 +1,4 @@
+#include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -31,7 +32,7 @@ int main()
         exit(1);
     }
 
-    send(client_fd, mes, sizeof(mes), 0);
+    send(client_fd, mes, strlen(mes), 0);
     printf("client send packet\n");
     read(client_fd, buffer, 512 - 1);
     printf("%s", buffer);

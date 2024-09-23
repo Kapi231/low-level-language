@@ -1,9 +1,6 @@
-all: compile run
+all: compile
 
 compile:
 	gcc main.c -o runserver
 	gcc client.c -o runclient
 
-run:
-	./runserver
-	./runclient

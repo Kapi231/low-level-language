@@ -7,9 +7,14 @@
 
 void TCP_server(int Port)
 {
+    int BufferSize = 512;
+
     printf("Initialiazing server...\n");    
     const char *hello = "Hello";
-    char buffer[512] = { 0 };
+    //char buffer[512] = { 0 };
+    
+    char *buffer = malloc(BufferSize * sizeof(char));
+    
     int opt = 1;
 
     // Assigning variables
@@ -47,11 +52,11 @@ void TCP_server(int Port)
         exit(1);
     }
 
-    read(commmunication_socket, buffer, sizeof(buffer) - 1);
+    read(commmunication_socket, buffer, BufferSize * sizeof(char));
     printf("%s\n", buffer);
     send(commmunication_socket, hello, sizeof(hello) - 1, 0);
-    printf("Message send");
-    
+    printf("Message send\n");
+
     close(commmunication_socket);
     close(sockfd);
 }
