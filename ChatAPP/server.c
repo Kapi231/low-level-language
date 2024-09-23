@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <string.h>
 
 void TCP_server(int Port)
 {
@@ -54,9 +55,12 @@ void TCP_server(int Port)
 
     read(commmunication_socket, buffer, BufferSize * sizeof(char));
     printf("%s\n", buffer);
-    send(commmunication_socket, hello, sizeof(hello) - 1, 0);
+    send(commmunication_socket, hello, strlen(hello), 0);
     printf("Message send\n");
+    
+    memset(buffer, 0, BufferSize * sizeof(char)); //Clearing buffer
 
+//    free(buffer); //Freeing buffer memory
     close(commmunication_socket);
     close(sockfd);
 }
