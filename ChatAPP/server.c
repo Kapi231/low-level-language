@@ -46,21 +46,22 @@ void TCP_server(int Port)
         perror("Listen error!");
         exit(1);
     }
-
-    if ((commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len)) == -1)
-    {
-        perror("Accept error!");
-        exit(1);
-    }
-
-    read(commmunication_socket, buffer, BufferSize * sizeof(char));
-    printf("%s\n", buffer);
-    send(commmunication_socket, hello, strlen(hello), 0);
-    printf("Message send\n");
     
-    memset(buffer, 0, BufferSize * sizeof(char)); //Clearing buffer
+    while (1) 
+    {
+      if ((commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len)) == -1)
+      {
+          perror("Accept error!");
+          exit(1);
+      }
 
-//    free(buffer); //Freeing buffer memory
+      read(commmunication_socket, buffer, BufferSize * sizeof(char));
+      printf("%s\n", buffer);
+      send(commmunication_socket, hello, strlen(hello), 0);
+      
+      memset(buffer, 0, BufferSize * sizeof(char)); //Clearing buffer
+    }
+    free(buffer); //Freeing buffer memory
     close(commmunication_socket);
     close(sockfd);
 }
