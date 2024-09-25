@@ -8,15 +8,16 @@
 
 void TCP_server(int Port)
 {
-    int BufferSize = 512;
-
     printf("Initialiazing server...\n");    
-    const char *hello = "Hello";
-    //char buffer[512] = { 0 };
-    
-    char *buffer = malloc(BufferSize * sizeof(char));
-    
+    const char* hello = "Packet recived\n";
+
     int opt = 1;
+    int BufferSize = 512;
+    char buffer[BufferSize];
+    for (int i = 0; i < BufferSize; i++)
+    {
+        buffer[i] = 0;
+    }
 
     // Assigning variables
     struct sockaddr_in sock_addr;
@@ -52,16 +53,18 @@ void TCP_server(int Port)
       if ((commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len)) == -1)
       {
           perror("Accept error!");
-          exit(1);
       }
 
       read(commmunication_socket, buffer, BufferSize * sizeof(char));
       printf("%s\n", buffer);
       send(commmunication_socket, hello, strlen(hello), 0);
       
-      memset(buffer, 0, BufferSize * sizeof(char)); //Clearing buffer
+      //clearing buffer
+      for (int i = 0; i < BufferSize; i++)
+      {
+          buffer[i] = 0;
+      }
     }
-    free(buffer); //Freeing buffer memory
     close(commmunication_socket);
     close(sockfd);
 }
