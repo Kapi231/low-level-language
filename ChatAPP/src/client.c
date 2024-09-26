@@ -5,8 +5,14 @@
 #include <stdlib.h>
 #include <arpa/inet.h>
 
-int main()
+#include "raylib.h"
+
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+
+void clientApp()
 {
+    //-------------------Network section-------------------------
     const char *mes = "Hello Server";
     char buffer[512] = { 0 };
     int client_fd;
@@ -32,11 +38,44 @@ int main()
         exit(1);
     }
 
-    send(client_fd, mes, strlen(mes), 0);
-    printf("client send packet\n");
-    read(client_fd, buffer, 512 - 1);
-    printf("%s", buffer);
+    //-------------------GUI section-------------------------------------------------
+    int screenWidth = 400;
+    int screenHeight = 200;
+    bool sendMsg = false;
 
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(screenWidth, screenHeight, "raygui - controls test suite");
+    SetTargetFPS(60);
+
+    bool showMessageBox = false;
+
+    while (!WindowShouldClose())
+   {
+        screenWidth = GetScreenWidth();
+        screenHeight = GetScreenHeight();
+
+        Rectangle textBox = { 10, screenHeight - 60, screenWidth - 140, 50};
+
+        BeginDrawing();
+        ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
+
+        DrawRectangleRec(textBox, LIGHTGRAY);
+
+        if (GuiButton((Rectangle){screenWidth - 110, screenHeight - 60, 100, 50}, "SEND")) sendMsg = true;
+        
+        if (sendMsg)
+        {
+            // Send message to server
+            send(client_fd, mes, strlen(mes), 0);
+            printf("client send packet\n");
+            read(client_fd, buffer, 512 - 1);
+            printf("%s", buffer);
+            sendMsg = false;
+        }
+
+        EndDrawing();
+    }
+    CloseWindow();
+    
     close(client_fd); 
-    return 0;
 }

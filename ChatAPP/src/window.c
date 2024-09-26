@@ -3,33 +3,37 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-int main()
+void guiWindow(int bufferSize)
 {
-    InitWindow(400, 200, "raygui - controls test suite");
+    int screenWidth = 400;
+    int screenHeight = 200;
+
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(screenWidth, screenHeight, "raygui - controls test suite");
     SetTargetFPS(60);
 
     bool showMessageBox = false;
 
     while (!WindowShouldClose())
     {
-        // Draw
-        //----------------------------------------------------------------------------------
+        screenWidth = GetScreenWidth();
+        screenHeight = GetScreenHeight();
+
+        Rectangle textBox = { 10, screenHeight - 60, screenWidth - 100, 50};
+
         BeginDrawing();
-            ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
+        ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
-            if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
+        if (GuiButton((Rectangle){screenWidth - 110, screenHeight - 60, 100, 50}, "SEND"))
+        {
+            // Send message to server    
+        }
 
-            if (showMessageBox)
-            {
-                int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
-                    "#191#Message Box", "Hi! This is a message!", "Nice;Cool");
 
-                if (result >= 0) showMessageBox = false;
-            }
+
 
         EndDrawing();
     }
 
     CloseWindow();
-    return 0;
 }

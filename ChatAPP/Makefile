@@ -1,7 +1,6 @@
 all: compile
 
 compile:
-	gcc src/main.c -o runserver
-	gcc src/client.c -o runclient
-	gcc src/window.c -o window -I include -L lib -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+	gcc src/mainServer.c -o runserver
+	gcc src/mainClient.c -o runclient -I include -L lib -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
