@@ -50,19 +50,11 @@ void clientApp()
     bool showMessageBox = false;
 
     while (!WindowShouldClose())
-   {
+    {
         screenWidth = GetScreenWidth();
         screenHeight = GetScreenHeight();
 
         Rectangle textBox = { 10, screenHeight - 60, screenWidth - 140, 50};
-
-        BeginDrawing();
-        ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
-
-        DrawRectangleRec(textBox, LIGHTGRAY);
-
-        if (GuiButton((Rectangle){screenWidth - 110, screenHeight - 60, 100, 50}, "SEND")) sendMsg = true;
-        
         if (sendMsg)
         {
             // Send message to server
@@ -73,6 +65,13 @@ void clientApp()
             sendMsg = false;
         }
 
+        BeginDrawing();
+        
+        ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
+        DrawRectangleRec(textBox, LIGHTGRAY);
+
+        if (GuiButton((Rectangle){screenWidth - 110, screenHeight - 60, 100, 50}, "SEND")) sendMsg = true;
+        
         EndDrawing();
     }
     CloseWindow();
