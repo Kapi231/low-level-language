@@ -47,14 +47,12 @@ void TCP_server(int Port)
         perror("Listen error!");
         exit(1);
     }
-    
+    if ((commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len)) == -1)
+    {
+        perror("Accept error!");
+    }
     while (1) 
     {
-      if ((commmunication_socket = accept(sockfd, (struct sockaddr*)&sock_addr, &addr_len)) == -1)
-      {
-          perror("Accept error!");
-      }
-
       read(commmunication_socket, buffer, BufferSize * sizeof(char));
       printf("%s\n", buffer);
       send(commmunication_socket, hello, strlen(hello), 0);
