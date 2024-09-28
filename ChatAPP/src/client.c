@@ -10,12 +10,15 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
+#define BUFFER_SIZE 512
+
 int main()
 {
     //-------------------Network section-------------------------
-    const char *mes = "Hello Server";
-    char buffer[512] = { 0 };
+    char sendBuffer[BUFFER_SIZE + 1] = "\0";
+    char readBuffer[BUFFER_SIZE] = { 0 };
     int client_fd;
+    int letterCount = 0;
 
     if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
@@ -39,8 +42,8 @@ int main()
     }
 
     //-------------------GUI section-------------------------------------------------
-    int screenWidth = 400;
-    int screenHeight = 200;
+    int screenWidth = 800;
+    int screenHeight = 500;
     bool sendMsg = false;
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -51,17 +54,42 @@ int main()
 
     while (!WindowShouldClose())
     {
+        ClearBackground(RAYWHITE);
         screenWidth = GetScreenWidth();
         screenHeight = GetScreenHeight();
+
+        int key = GetCharPressed();
+        
+        while (key > 0) //It allows to queue chars 
+        {
+            
+            if (key >= 32 && key <= 125) 
+            {
+                sendBuffer[letterCount] = key;
+                letterCount++;
+            }
+            
+            key = GetCharPressed(); //Checks next char in queue
+        }
+
+        if (IsKeyPressed(KEY_BACKSPACE) && letterCount > 0)
+        {
+            letterCount--;
+            sendBuffer[letterCount] = '\0';
+        }
 
         Rectangle textBox = { 10, screenHeight - 60, screenWidth - 140, 50};
         if (sendMsg)
         {
             // Send message to server
-            send(client_fd, mes, strlen(mes), 0);
+            send(client_fd, sendBuffer, strlen(sendBuffer), 0);
             printf("client send packet\n");
-            read(client_fd, buffer, 512 - 1);
-            printf("%s", buffer);
+            memset(sendBuffer, 0, BUFFER_SIZE); //Clear buffer
+            letterCount = 0;
+
+            read(client_fd, readBuffer, BUFFER_SIZE - 1);
+            printf("%s", readBuffer);
+            memset(readBuffer, 0, BUFFER_SIZE - 1); //Clear buffer
             sendMsg = false;
         }
 
@@ -69,6 +97,8 @@ int main()
         
         ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
         DrawRectangleRec(textBox, LIGHTGRAY);
+
+        DrawText(sendBuffer, textBox.x + 5, textBox.y + 5, 40, MAROON);
 
         if (GuiButton((Rectangle){screenWidth - 110, screenHeight - 60, 100, 50}, "SEND")) sendMsg = true;
         
