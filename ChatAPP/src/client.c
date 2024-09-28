@@ -10,7 +10,7 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-void clientApp()
+int main()
 {
     //-------------------Network section-------------------------
     const char *mes = "Hello Server";
@@ -77,4 +77,5 @@ void clientApp()
     CloseWindow();
     
     close(client_fd); 
+    return 0;
 }
