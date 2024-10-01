@@ -6,18 +6,15 @@
 #include <netinet/in.h>
 #include <string.h>
 
+#define BUFFER_SIZE 512
+
 void TCP_server(int Port)
 {
     printf("Initialiazing server...\n");    
     const char* hello = "Packet recived\n";
 
     int opt = 1;
-    int BufferSize = 512;
-    char buffer[BufferSize];
-    for (int i = 0; i < BufferSize; i++)
-    {
-        buffer[i] = 0;
-    }
+    char buffer[BUFFER_SIZE] = { 0 };
 
     // Assigning variables
     struct sockaddr_in sock_addr;
@@ -53,15 +50,10 @@ void TCP_server(int Port)
     }
     while (1) 
     {
-      read(commmunication_socket, buffer, BufferSize * sizeof(char));
-      printf("%s\n", buffer);
-      send(commmunication_socket, hello, strlen(hello), 0);
-      
-      //clearing buffer
-      for (int i = 0; i < BufferSize; i++)
-      {
-          buffer[i] = 0;
-      }
+        read(commmunication_socket, buffer, BUFFER_SIZE * sizeof(char));
+        printf("%s\n", buffer);
+        send(commmunication_socket, hello, strlen(hello), 0);
+        memset(buffer, 0, BUFFER_SIZE - 1); //clearing buffer
     }
     close(commmunication_socket);
     close(sockfd);
