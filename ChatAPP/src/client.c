@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -15,7 +16,7 @@
 int main()
 {
     //-------------------Network section-------------------------
-    char sendBuffer[BUFFER_SIZE + 1] = "\0";
+    char sendBuffer[BUFFER_SIZE] = "\0";
     char readBuffer[BUFFER_SIZE] = { 0 };
     int client_fd;
     int letterCount = 0;
@@ -81,7 +82,6 @@ int main()
         Rectangle textBox = { 10, screenHeight - 60, screenWidth - 140, 50};
         if (sendMsg)
         {
-            // Send message to server
             send(client_fd, sendBuffer, strlen(sendBuffer), 0);
             printf("client send packet\n");
             memset(sendBuffer, 0, BUFFER_SIZE); //Clear buffer
